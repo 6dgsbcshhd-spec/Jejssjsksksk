@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#07071a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>NeoStudy</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230a0a1e'/%3E%3Cpath d='M25 75V25l50 50V25' stroke='%2300f0ff' stroke-width='8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#07071a;--bg-2:#0e0e26;--card:rgba(255,255,255,.04);--border:rgba(255,255,255,.08);--text:#eef2ff;--text-dim:#8b93b8;--accent:#00f0ff;--accent2:#a855f7;--gold:#ffc84a;--green:#00ff88;--red:#ff3366}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;min-height:100vh;overflow-x:hidden;position:relative;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:rgba(168,85,247,.4);border-radius:10px}
+button{font-family:inherit;cursor:pointer;border:none;background:transparent;color:inherit}
+input,textarea,select{font-family:inherit;font-size:16px}
+svg{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+a{color:inherit;text-decoration:none}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes gradMove{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(1.05)}}
+@keyframes shine{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes typing{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.35}
+.orb-1{width:500px;height:500px;background:#00f0ff;top:-150px;left:-150px;animation:float 12s ease-in-out infinite}
+.orb-2{width:400px;height:400px;background:#a855f7;bottom:20%;right:-150px;animation:float 15s ease-in-out infinite reverse}
+.orb-3{width:450px;height:450px;background:#ff00aa;top:40%;left:30%;opacity:.2;animation:float 18s ease-in-out infinite}
+.auth-screen{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;padding-top:calc(20px + env(safe-area-inset-top));padding-bottom:calc(20px + env(safe-area-inset-bottom));background:radial-gradient(circle at 50% 30%,rgba(168,85,247,.15),transparent 60%),var(--bg)}
+.auth-card{width:100%;max-width:420px;background:var(--bg-2);border:1px solid rgba(255,255,255,.15);border-radius:28px;padding:36px 28px;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:scaleIn .4s;position:relative;overflow:hidden}
+.auth-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(0,240,255,.1),transparent 30%);animation:spin 8s linear infinite;pointer-events:none}
+.auth-logo{width:76px;height:76px;margin:0 auto 20px;background:linear-gradient(135deg,#00f0ff,#a855f7,#ff00aa);background-size:200% 200%;animation:gradMove 4s ease infinite;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;color:#fff;box-shadow:0 12px 40px rgba(168,85,247,.5);position:relative;z-index:1}
+.auth-title{text-align:center;font-size:28px;font-weight:900;margin-bottom:6px;background:linear-gradient(135deg,#00f0ff,#a855f7,#ff00aa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;z-index:1}
+.auth-sub{text-align:center;color:var(--text-dim);font-size:14px;margin-bottom:26px;position:relative;z-index:1}
+.auth-tabs{display:flex;gap:6px;background:rgba(0,0,0,.3);border-radius:14px;padding:4px;margin-bottom:20px;position:relative;z-index:1}
+.auth-tab{flex:1;padding:11px;color:var(--text-dim);font-size:14px;font-weight:600;border-radius:10px;transition:all .25s}
+.auth-tab.active{background:linear-gradient(135deg,#00f0ff,#a855f7);color:#fff}
+.af{margin-bottom:14px;position:relative;z-index:1}
+.af label{display:block;font-size:12px;color:var(--text-dim);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.af input{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:14px;padding:14px 16px;color:var(--text);font-size:15px;outline:none;transition:border .2s}
+.af input:focus{border-color:var(--accent)}
+.auth-btn{width:100%;padding:15px;border-radius:14px;background:linear-gradient(135deg,#00f0ff,#a855f7);color:#fff;font-size:15px;font-weight:700;transition:all .25s;margin-top:6px;position:relative;overflow:hidden;z-index:1}
+.auth-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);background-size:200% 100%;animation:shine 3s infinite}
+.auth-btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(168,85,247,.5)}
+.auth-err{color:var(--red);font-size:13px;text-align:center;margin-top:10px;min-height:18px;position:relative;z-index:1}
+.app{display:none;min-height:100vh;position:relative;z-index:1;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
+.app.show{display:block;animation:fadeIn .3s}
+.topbar{position:sticky;top:0;z-index:50;padding:calc(14px + env(safe-area-inset-top)) 16px 14px;display:flex;align-items:center;gap:12px;background:rgba(7,7,26,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.topbar-logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#00f0ff,#a855f7,#ff00aa);background-size:200% 200%;animation:gradMove 4s ease infinite;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 6px 20px rgba(168,85,247,.4)}
+.topbar-title{flex:1;font-size:17px;font-weight:800}
+.topbar-title span{background:linear-gradient(135deg,#00f0ff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.topbar-info{display:flex;gap:6px;align-items:center}
+.chip{padding:6px 12px;border-radius:100px;background:rgba(255,255,255,.05);border:1px solid var(--border);font-size:12px;font-weight:700;color:var(--text-dim);display:flex;align-items:center;gap:5px;white-space:nowrap}
+.chip.active{background:linear-gradient(135deg,rgba(0,240,255,.15),rgba(168,85,247,.1));border-color:rgba(0,240,255,.4);color:var(--accent)}
+.chip.admin{background:linear-gradient(135deg,rgba(255,200,74,.15),rgba(255,157,58,.1));border-color:rgba(255,200,74,.5);color:var(--gold)}
+.chip .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.page{padding:20px 16px;animation:fadeUp .3s}
+.page.hidden{display:none}
+.hero{background:linear-gradient(145deg,rgba(0,240,255,.08),rgba(168,85,247,.05),rgba(255,0,170,.05));border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:28px 22px;margin-bottom:20px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(0,240,255,.3),transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-120px;left:-100px;width:280px;height:280px;background:radial-gradient(circle,rgba(255,0,170,.25),transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;background:rgba(0,255,136,.12);border:1px solid rgba(0,255,136,.35);font-size:12px;font-weight:700;color:var(--green);margin-bottom:16px;position:relative;z-index:1}
+.hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 1.5s infinite}
+.hero h1{font-size:clamp(26px,6vw,38px);font-weight:900;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;position:relative;z-index:1}
+.hero h1 .grad{background:linear-gradient(135deg,#00f0ff,#a855f7,#ff00aa);background-size:200% 200%;animation:gradMove 5s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:var(--text-dim);font-size:14.5px;line-height:1.6;margin-bottom:20px;position:relative;z-index:1}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
+.hero-stats{display:flex;gap:14px;margin-top:22px;position:relative;z-index:1;flex-wrap:wrap}
+.hstat{flex:1;min-width:80px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:14px;padding:12px;text-align:center}
+.hstat-v{font-size:20px;font-weight:900;background:linear-gradient(135deg,#00f0ff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hstat-l{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;font-weight:700}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 26px;border-radius:14px;font-size:15px;font-weight:700;transition:all .25s cubic-bezier(.34,1.56,.64,1);border:none;position:relative;overflow:hidden;white-space:nowrap}
+.btn-primary{background:linear-gradient(135deg,#00f0ff,#a855f7);color:#fff;box-shadow:0 8px 30px rgba(0,240,255,.35)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-gold{background:linear-gradient(135deg,#ffc84a,#ff9d3a);color:#3a2010;box-shadow:0 8px 30px rgba(255,200,74,.4)}
+.btn-ghost{background:rgba(255,255,255,.05);color:var(--text);border:1px solid rgba(255,255,255,.15)}
+.btn-ghost:hover{background:rgba(255,255,255,.1);border-color:var(--accent)}
+.btn-danger{background:linear-gradient(135deg,#ff3366,#cc0033);color:#fff}
+.btn-sm{padding:8px 14px;font-size:13px;border-radius:10px}
+.btn-block{width:100%}
+.section-head{margin-bottom:16px}
+.section-label{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#c4a8ff;margin-bottom:10px}
+.section-title{font-size:22px;font-weight:900;letter-spacing:-.02em;margin-bottom:6px}
+.section-desc{color:var(--text-dim);font-size:13.5px;line-height:1.55}
+.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.feat{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:18px;transition:all .35s;cursor:pointer;position:relative;overflow:hidden}
+.feat:hover{background:rgba(255,255,255,.07);border-color:rgba(0,240,255,.3);transform:translateY(-4px)}
+.feat-icon{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,rgba(0,240,255,.2),rgba(168,85,247,.15));border:1px solid rgba(0,240,255,.25);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:12px}
+.feat-title{font-size:15px;font-weight:800;margin-bottom:4px}
+.feat-desc{font-size:12.5px;color:var(--text-dim);line-height:1.5}
+.tabs{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:space-around;padding:8px 6px calc(8px + env(safe-area-inset-bottom));background:rgba(10,10,30,.95);backdrop-filter:blur(24px);border-top:1px solid var(--border)}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border-radius:14px;color:var(--text-dim);font-size:10.5px;font-weight:700;transition:all .25s;position:relative;max-width:80px}
+.tab svg{width:22px;height:22px;transition:transform .25s}
+.tab.active{color:var(--accent)}
+.tab.active svg{transform:scale(1.1);stroke:#00f0ff}
+.tab.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:24px;height:3px;border-radius:0 0 3px 3px;background:linear-gradient(90deg,#00f0ff,#a855f7)}
+.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 280px);min-height:400px;background:var(--card);border:1px solid var(--border);border-radius:24px;overflow:hidden}
+.chat-head{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.2)}
+.chat-head-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#00f0ff,#a855f7);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.chat-head-info{flex:1;min-width:0}
+.chat-head-name{font-size:14.5px;font-weight:800}
+.chat-head-status{font-size:11.5px;color:var(--green);display:flex;align-items:center;gap:4px}
+.chat-head-status .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:85%;padding:11px 14px;border-radius:16px;font-size:14.5px;line-height:1.5;animation:slideUp .3s;word-wrap:break-word;white-space:pre-wrap}
+.msg.user{align-self:flex-end;background:linear-gradient(135deg,#00f0ff,#a855f7);color:#fff;border-bottom-right-radius:4px}
+.msg.ai{align-self:flex-start;background:rgba(255,255,255,.06);border:1px solid var(--border);border-bottom-left-radius:4px}
+.msg.ai strong{color:var(--accent)}
+.msg-time{font-size:10px;opacity:.6;margin-top:4px;display:block}
+.typing-indicator{align-self:flex-start;background:rgba(255,255,255,.06);border:1px solid var(--border);padding:14px 18px;border-radius:16px;border-bottom-left-radius:4px;display:flex;gap:4px}
+.typing-indicator span{width:7px;height:7px;border-radius:50%;background:var(--text-dim);animation:typing 1.2s infinite}
+.typing-indicator span:nth-child(2){animation-delay:.2s}
+.typing-indicator span:nth-child(3){animation-delay:.4s}
+.chat-input-bar{padding:12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end;background:rgba(0,0,0,.2)}
+.chat-input{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:16px;padding:11px 14px;color:var(--text);font-size:15px;outline:none;resize:none;max-height:120px;min-height:44px;line-height:1.4}
+.chat-input:focus{border-color:var(--accent)}
+.icon-btn-round{width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-dim);transition:all .2s;flex-shrink:0}
+.icon-btn-round:hover{color:var(--text);border-color:var(--accent)}
+.icon-btn-round.recording{background:var(--red);color:#fff;border-color:var(--red);animation:pulse 1s infinite}
+.icon-btn-round.send{background:linear-gradient(135deg,#00f0ff,#a855f7);color:#fff;border:none}
+.lang-chips{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.lang-chips::-webkit-scrollbar{display:none}
+.lang-chip{padding:8px 16px;border-radius:100px;background:rgba(255,255,255,.05);border:1px solid var(--border);font-size:13px;font-weight:700;white-space:nowrap;transition:all .25s;flex-shrink:0;color:var(--text-dim)}
+.lang-chip.active{background:linear-gradient(135deg,#00f0ff,#a855f7);color:#fff;border-color:transparent}
+.price-result{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:10px;animation:slideUp .3s;display:flex;gap:12px;align-items:center;position:relative}
+.price-result-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(0,240,255,.2),rgba(168,85,247,.15));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.price-result-info{flex:1;min-width:0}
+.price-result-name{font-size:14.5px;font-weight:800;margin-bottom:2px}
+.price-result-sub{font-size:12px;color:var(--text-dim)}
+.price-result-cost{font-size:17px;font-weight:900;color:var(--green);white-space:nowrap}
+.price-result-best{position:absolute;top:-8px;right:12px;background:linear-gradient(135deg,#00ff88,#00f0ff);color:#003a2e;font-size:9px;font-weight:900;padding:3px 8px;border-radius:100px}
+.upload-zone{background:linear-gradient(145deg,rgba(0,240,255,.05),rgba(168,85,247,.03));border:2px dashed rgba(255,255,255,.15);border-radius:20px;padding:32px 20px;text-align:center;cursor:pointer;transition:all .3s;margin-bottom:16px}
+.upload-zone:hover{border-color:var(--accent);background:rgba(0,240,255,.08)}
+.upload-zone svg{width:44px;height:44px;stroke:var(--accent);margin-bottom:12px;opacity:.8}
+.upload-zone-title{font-size:15px;font-weight:800;margin-bottom:4px}
+.upload-zone-sub{font-size:12.5px;color:var(--text-dim)}
+.input-block{margin-bottom:14px}
+.input-block label{display:block;font-size:12px;color:var(--text-dim);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.input-block textarea,.input-block input{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:14px;padding:14px 16px;color:var(--text);font-size:15px;outline:none;resize:vertical;min-height:100px;transition:border .2s}
+.input-block input{min-height:auto}
+.input-block textarea:focus,.input-block input:focus{border-color:var(--accent)}
+.plans{display:grid;gap:14px;margin-bottom:20px}
+.plan{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:22px;position:relative;overflow:hidden;transition:all .35s}
+.plan:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.35)}
+.plan.featured{background:linear-gradient(145deg,rgba(255,200,74,.1),rgba(255,0,170,.06));border-color:rgba(255,200,74,.4)}
+.plan.featured::before{content:'ПОПУЛЯРНОЕ';position:absolute;top:14px;right:14px;background:linear-gradient(135deg,#ffc84a,#ff9d3a);color:#3a2010;font-size:10px;font-weight:900;padding:4px 10px;border-radius:100px}
+.plan-name{font-size:17px;font-weight:900;margin-bottom:4px}
+.plan-price{font-size:32px;font-weight:900;background:linear-gradient(135deg,#00f0ff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:2px}
+.plan.featured .plan-price{background:linear-gradient(135deg,#ffc84a,#ff9d3a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.plan-dur{font-size:13px;color:var(--text-dim);margin-bottom:16px}
+.plan-feats{list-style:none;font-size:13.5px;line-height:2;margin-bottom:16px}
+.plan-feats li::before{content:'✓';color:var(--green);font-weight:900;margin-right:8px}
+.contact-btn{flex:1;min-width:140px;padding:14px;border-radius:14px;background:linear-gradient(135deg,#229ED9,#1a7fb5);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;box-shadow:0 8px 25px rgba(34,158,217,.35)}
+.contact-btn svg{width:20px;height:20px;fill:#fff;stroke:none}
+.pay-options{display:grid;gap:10px;margin-bottom:18px}
+.pay-option{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px}
+.pay-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;background:linear-gradient(135deg,rgba(0,240,255,.15),rgba(168,85,247,.1))}
+.pay-name{font-size:14.5px;font-weight:800;margin-bottom:2px}
+.pay-desc{font-size:12.5px;color:var(--text-dim)}
+.promo-box{background:linear-gradient(145deg,rgba(255,200,74,.08),rgba(255,0,170,.05));border:1px solid rgba(255,200,74,.3);border-radius:20px;padding:20px;margin-top:16px}
+.promo-row{display:flex;gap:10px;margin-top:12px}
+.promo-input{flex:1;background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:14px;padding:13px 16px;color:var(--text);font-size:14px;font-weight:700;outline:none;text-transform:uppercase}
+.promo-input:focus{border-color:var(--gold)}
+.promo-status{font-size:13px;text-align:center;margin-top:10px;min-height:18px;font-weight:600}
+.promo-status.ok{color:var(--green)}
+.promo-status.err{color:var(--red)}
+.toast{position:fixed;bottom:calc(100px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(150px);background:rgba(20,20,40,.95);border:1px solid rgba(255,255,255,.15);color:var(--text);padding:14px 22px;border-radius:14px;font-size:14px;font-weight:600;z-index:9999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 12px 40px rgba(0,0,0,.6);max-width:90%;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.ok{border-color:rgba(0,255,136,.4);color:var(--green)}
+.toast.err{border-color:rgba(255,51,102,.4);color:var(--red)}
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+.profile-card{background:linear-gradient(145deg,rgba(0,240,255,.08),rgba(168,85,247,.06));border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:24px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
+.profile-avatar{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#00f0ff,#a855f7,#ff00aa);background-size:200% 200%;animation:gradMove 4s ease infinite;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;color:#fff;margin:0 auto 14px;border:4px solid rgba(255,255,255,.1);box-shadow:0 12px 40px rgba(168,85,247,.4)}
+.profile-avatar.admin{background:linear-gradient(135deg,#ffc84a,#ff9d3a,#ff5cb8)}
+.profile-name{font-size:20px;font-weight:900;margin-bottom:4px}
+.profile-mail{font-size:13px;color:var(--text-dim);margin-bottom:10px}
+.profile-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;background:linear-gradient(135deg,rgba(255,200,74,.15),rgba(255,157,58,.1));border:1px solid rgba(255,200,74,.4);color:var(--gold);font-size:12.5px;font-weight:800}
+.profile-badge.free{background:rgba(255,255,255,.05);border-color:var(--border);color:var(--text-dim)}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-mini{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:center}
+.stat-mini-v{font-size:20px;font-weight:900;background:linear-gradient(135deg,#00f0ff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-mini-l{font-size:10.5px;color:var(--text-dim);text-transform:uppercase;margin-top:4px;font-weight:700}
+.settings-list{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:16px}
+.setting-row{display:flex;align-items:center;gap:14px;padding:16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s}
+.setting-row:last-child{border-bottom:none}
+.setting-row:hover{background:rgba(255,255,255,.03)}
+.setting-row svg{width:22px;height:22px;stroke:var(--accent);flex-shrink:0}
+.setting-info{flex:1}
+.setting-name{font-size:14.5px;font-weight:700;margin-bottom:2px}
+.setting-sub{font-size:12px;color:var(--text-dim)}
+.notice{padding:14px 16px;border-radius:14px;font-size:13px;line-height:1.55;margin-bottom:14px}
+.notice-info{background:rgba(0,240,255,.06);border:1px solid rgba(0,240,255,.2);color:#7ad8ff}
+.notice-warn{background:rgba(255,200,74,.06);border:1px solid rgba(255,200,74,.25);color:#ffd77a}
+.notice-err{background:rgba(255,51,102,.08);border:1px solid rgba(255,51,102,.3);color:#ff8aaa}
+
+/* ADMIN PANEL */
+.admin-header{padding:24px 16px;background:linear-gradient(145deg,rgba(255,200,74,.15),rgba(255,92,184,.1));border-radius:24px;margin-bottom:16px;text-align:center;border:1px solid rgba(255,200,74,.3);position:relative;overflow:hidden}
+.admin-crown{font-size:56px;margin-bottom:12px;animation:float 3s infinite;filter:drop-shadow(0 0 30px rgba(255,200,74,.8))}
+.admin-title{font-size:24px;font-weight:900;background:linear-gradient(135deg,#ffc84a,#ff9d3a,#ff5cb8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.admin-sub{font-size:13.5px;color:var(--text-dim)}
+.admin-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.admin-stat{background:linear-gradient(145deg,rgba(255,200,74,.08),rgba(255,92,184,.05));border:1px solid rgba(255,200,74,.25);border-radius:16px;padding:16px;text-align:center}
+.admin-stat-v{font-size:26px;font-weight:900;color:var(--gold)}
+.admin-stat-l{font-size:11px;color:var(--text-dim);text-transform:uppercase;margin-top:2px;font-weight:700;letter-spacing:.05em}
+.admin-user-row{display:flex;align-items:center;gap:12px;padding:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px}
+.admin-user-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#00f0ff,#a855f7);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0}
+.admin-user-info{flex:1;min-width:0}
+.admin-user-name{font-size:14.5px;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-user-meta{font-size:11.5px;color:var(--text-dim)}
+.admin-actions{display:flex;gap:6px;flex-shrink:0}
+.admin-actions button{width:36px;height:36px;border-radius:10px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .2s}
+.admin-actions button:hover{background:rgba(0,240,255,.15);border-color:var(--accent);transform:scale(1.05)}
+.admin-actions button.danger:hover{background:rgba(255,51,102,.2);border-color:var(--red)}
+.limit-info{background:rgba(0,240,255,.06);border:1px solid rgba(0,240,255,.2);border-radius:12px;padding:10px 14px;font-size:12.5px;color:#7ad8ff;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+@media(max-width:480px){.features-grid{grid-template-columns:1fr}.hero{padding:24px 18px}}
+</style>
+</head>
+<body>
+
+<div class="bg-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="auth-screen" id="authScreen">
+  <div class="auth-card">
+    <div class="auth-logo">N</div>
+    <div class="auth-title">NeoStudy</div>
+    <div class="auth-sub">ИИ-помощник в учёбе · Бесплатно</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-auth="login">Вход</button>
+      <button class="auth-tab" data-auth="register">Регистрация</button>
+    </div>
+    <div class="af"><label>Email</label><input type="email" id="authEmail" placeholder="you@example.com" autocapitalize="off"></div>
+    <div class="af"><label>Пароль</label><input type="password" id="authPass" placeholder="Минимум 4 символа"></div>
+    <button class="auth-btn" id="authBtn">Войти</button>
+    <div class="auth-err" id="authErr"></div>
+  </div>
+</div>
+
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="topbar-logo">N</div>
+    <div class="topbar-title">Neo<span>Study</span></div>
+    <div class="topbar-info">
+      <div class="chip active" id="statusChip"><span class="dot"></span><span id="statusText">Free</span></div>
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <div class="page" id="page-home">
+    <div class="hero">
+      <div class="hero-badge"><span class="dot"></span>ИИ · Бесплатно</div>
+      <h1>Учись <span class="grad">умнее</span><br>с NeoStudy</h1>
+      <p>Домашка по любому предмету, репетитор по 6 языкам и сравнение цен. 3 запроса в день на каждый сервис — бесплатно.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="go('tutor')">🎓 К репетитору</button>
+        <button class="btn btn-ghost" onclick="go('hw')">📝 ГДЗ</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-v" id="statFree">3</div><div class="hstat-l">В день</div></div>
+        <div class="hstat"><div class="hstat-v">6</div><div class="hstat-l">Языков</div></div>
+        <div class="hstat"><div class="hstat-v">∞</div><div class="hstat-l">Бесплатно</div></div>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <div class="section-label">Возможности</div>
+      <div class="section-title">Что умеет NeoStudy</div>
+    </div>
+    <div class="features-grid">
+      <div class="feat" onclick="go('tutor')">
+        <div class="feat-icon">🎓</div>
+        <div class="feat-title">Репетитор</div>
+        <div class="feat-desc">6 языков · голосом и текстом</div>
+      </div>
+      <div class="feat" onclick="go('hw')">
+        <div class="feat-icon">📝</div>
+        <div class="feat-title">ГДЗ и решения</div>
+        <div class="feat-desc">Пошаговый разбор задачи</div>
+      </div>
+      <div class="feat" onclick="go('prices')">
+        <div class="feat-icon">💰</div>
+        <div class="feat-title">Сравнение цен</div>
+        <div class="feat-desc">Найдём дешевле</div>
+      </div>
+      <div class="feat" onclick="go('pay')">
+        <div class="feat-icon">⭐</div>
+        <div class="feat-title">Premium</div>
+        <div class="feat-desc">Больше запросов</div>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:24px">
+      <div class="section-label">Контакты</div>
+      <div class="section-title">Связаться с нами</div>
+    </div>
+    <a href="https://t.me/okselov" target="_blank" rel="noopener" class="contact-btn">
+      <svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+      Написать в Telegram: @okselov
+    </a>
+  </div>
+
+  <!-- TUTOR -->
+  <div class="page hidden" id="page-tutor">
+    <div class="section-head">
+      <div class="section-label">🎓 Репетитор</div>
+      <div class="section-title">Персональный учитель</div>
+    </div>
+    <div class="limit-info" id="tutorLimitInfo">
+      <span>📊</span><span>Запросов сегодня: <b id="tutorLimitLeft">3</b> / 3</span>
+    </div>
+    <div class="lang-chips" id="langChips"></div>
+    <div class="chat-wrap" style="margin-top:14px">
+      <div class="chat-head">
+        <div class="chat-head-avatar" id="tutorAvatar">🌍</div>
+        <div class="chat-head-info">
+          <div class="chat-head-name" id="tutorName">Выбери язык выше</div>
+          <div class="chat-head-status"><span class="dot"></span>Онлайн</div>
+        </div>
+      </div>
+      <div class="chat-messages" id="tutorMessages"></div>
+      <div class="chat-input-bar">
+        <button class="icon-btn-round" id="tutorMic" title="Голос">
+          <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3z"/><path d="M19 11a7 7 0 01-14 0M12 18v4M8 22h8"/></svg>
+        </button>
+        <textarea class="chat-input" id="tutorInput" placeholder="Спроси что-нибудь..." rows="1"></textarea>
+        <button class="icon-btn-round send" id="tutorSend">
+          <svg viewBox="0 0 24 24"><path d="M2.5 21L23 12 2.5 3 2.5 10l14 2-14 2z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HW -->
+  <div class="page hidden" id="page-hw">
+    <div class="section-head">
+      <div class="section-label">📝 ГДЗ</div>
+      <div class="section-title">Решение задач</div>
+    </div>
+    <div class="limit-info" id="hwLimitInfo">
+      <span>📊</span><span>Запросов сегодня: <b id="hwLimitLeft">3</b> / 3</span>
+    </div>
+    <div class="upload-zone" onclick="document.getElementById('hwPhoto').click()">
+      <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      <div class="upload-zone-title">Загрузить фото задания</div>
+      <div class="upload-zone-sub">Или введи текст ниже</div>
+      <input type="file" id="hwPhoto" accept="image/*" hidden>
+    </div>
+    <div class="input-block"><label>Задача</label><textarea id="hwInput" placeholder="Например: Реши уравнение 2x + 5 = 13..."></textarea></div>
+    <div class="input-block"><label>Предмет (необязательно)</label><input type="text" id="hwSubject" placeholder="Математика, физика..."></div>
+    <button class="btn btn-primary btn-block" id="hwSolve">✨ Решить</button>
+    <div id="hwResult" style="margin-top:18px"></div>
+  </div>
+
+  <!-- PRICES -->
+  <div class="page hidden" id="page-prices">
+    <div class="section-head">
+      <div class="section-label">💰 Сравнение цен</div>
+      <div class="section-title">Найдём дешевле</div>
+    </div>
+    <div class="limit-info" id="priceLimitInfo">
+      <span>📊</span><span>Запросов сегодня: <b id="priceLimitLeft">3</b> / 3</span>
+    </div>
+    <div class="upload-zone" onclick="document.getElementById('pricePhoto').click()">
+      <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      <div class="upload-zone-title">Фото товара</div>
+      <div class="upload-zone-sub">Или вставь ссылку ниже</div>
+      <input type="file" id="pricePhoto" accept="image/*" hidden>
+    </div>
+    <div class="input-block"><label>Ссылка</label><input type="url" id="priceUrl" placeholder="https://..."></div>
+    <div class="input-block"><label>Название товара</label><input type="text" id="priceName" placeholder="iPhone 15 Pro"></div>
+    <button class="btn btn-primary btn-block" id="priceSearch">🔍 Найти дешевле</button>
+    <div id="priceResults" style="margin-top:18px"></div>
+  </div>
+
+  <!-- PAY -->
+  <div class="page hidden" id="page-pay">
+    <div class="section-head">
+      <div class="section-label">⭐ Подписка</div>
+      <div class="section-title">NeoStudy Premium</div>
+      <div class="section-desc">Больше запросов, приоритет, эксклюзивные функции.</div>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <div class="plan-name">Неделя</div>
+        <div class="plan-price">100 ₽</div>
+        <div class="plan-dur">7 дней доступа</div>
+        <ul class="plan-feats"><li>100 запросов в день</li><li>Все языки</li><li>Голосовой ввод</li></ul>
+        <button class="btn btn-primary btn-block" onclick="selectPlan('week')">Выбрать</button>
+      </div>
+      <div class="plan featured">
+        <div class="plan-name">Месяц</div>
+        <div class="plan-price">400 ₽</div>
+        <div class="plan-dur">30 дней доступа</div>
+        <ul class="plan-feats"><li>Неограниченные запросы</li><li>Все функции</li><li>Значок Premium</li></ul>
+        <button class="btn btn-gold btn-block" onclick="selectPlan('month')">Выбрать</button>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Год</div>
+        <div class="plan-price">1200 ₽</div>
+        <div class="plan-dur">365 дней доступа</div>
+        <ul class="plan-feats"><li>Всё из месяца</li><li>Экономия 60%</li><li>Премиум-поддержка</li></ul>
+        <button class="btn btn-primary btn-block" onclick="selectPlan('year')">Выбрать</button>
+      </div>
+    </div>
+    <div class="promo-box">
+      <div style="font-size:14.5px;font-weight:800;color:var(--gold)">🎟️ Промокод</div>
+      <div class="promo-row">
+        <input type="text" class="promo-input" id="promoInput" placeholder="ПРОМОКОД" autocapitalize="characters">
+        <button class="btn btn-gold" id="promoBtn">OK</button>
+      </div>
+      <div class="promo-status" id="promoStatus"></div>
+    </div>
+    <div class="section-head" style="margin-top:28px">
+      <div class="section-label">💳 Оплата</div>
+      <div class="section-title">Способы оплаты</div>
+    </div>
+    <div class="pay-options">
+      <div class="pay-option"><div class="pay-icon">💳</div><div class="pay-info"><div class="pay-name">Рубли (перевод)</div><div class="pay-desc">СБП, карта, перевод</div></div></div>
+      <div class="pay-option"><div class="pay-icon">⭐</div><div class="pay-info"><div class="pay-name">Звёзды Telegram</div><div class="pay-desc">Через Telegram Stars</div></div></div>
+    </div>
+    <a href="https://t.me/okselov" target="_blank" rel="noopener" class="contact-btn" style="width:100%">
+      <svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+      Оплатить через @okselov
+    </a>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="page hidden" id="page-profile">
+    <div class="profile-card">
+      <div class="profile-avatar" id="profAvatar">U</div>
+      <div class="profile-name" id="profName">Пользователь</div>
+      <div class="profile-mail" id="profMail"></div>
+      <div id="profBadge" class="profile-badge free">Free</div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-mini"><div class="stat-mini-v" id="profTotalReq">0</div><div class="stat-mini-l">Всего</div></div>
+      <div class="stat-mini"><div class="stat-mini-v" id="profTodayReq">0</div><div class="stat-mini-l">Сегодня</div></div>
+      <div class="stat-mini"><div class="stat-mini-v" id="profDays">0</div><div class="stat-mini-l">Дней</div></div>
+    </div>
+    <div class="settings-list">
+      <div class="setting-row" onclick="go('pay')">
+        <svg viewBox="0 0 24 24"><path d="M12 1l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>
+        <div class="setting-info"><div class="setting-name">Оформить Premium</div><div class="setting-sub">Больше возможностей</div></div>
+      </div>
+      <div class="setting-row" onclick="logoutConfirm()">
+        <svg viewBox="0 0 24 24" style="stroke:var(--red)"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        <div class="setting-info"><div class="setting-name" style="color:var(--red)">Выйти</div><div class="setting-sub">Удалить сессию</div></div>
+      </div>
+    </div>
+    <div style="text-align:center;color:var(--text-dim);font-size:12px;padding:20px 0">NeoStudy v3.0</div>
+  </div>
+
+  <!-- ADMIN PAGE -->
+  <div class="page hidden" id="page-admin">
+    <div class="admin-header">
+      <div class="admin-crown">👑</div>
+      <div class="admin-title">Админ-панель</div>
+      <div class="admin-sub">У тебя безлимитные запросы</div>
+    </div>
+    <div class="admin-stats">
+      <div class="admin-stat"><div class="admin-stat-v" id="adminTotalUsers">0</div><div class="admin-stat-l">Пользователей</div></div>
+      <div class="admin-stat"><div class="admin-stat-v" id="adminTotalReqs">0</div><div class="admin-stat-l">Всего запросов</div></div>
+      <div class="admin-stat"><div class="admin-stat-v" id="adminTodayReqs">0</div><div class="admin-stat-l">Сегодня</div></div>
+      <div class="admin-stat"><div class="admin-stat-v" id="adminPremiumCount">0</div><div class="admin-stat-l">Premium</div></div>
+    </div>
+    <div class="section-head">
+      <div class="section-title" style="font-size:16px">Пользователи</div>
+      <button class="btn btn-ghost btn-sm" onclick="refreshAdmin()" style="margin-top:8px">🔄 Обновить</button>
+    </div>
+    <div id="adminUsersList"></div>
+    <div class="section-head" style="margin-top:24px">
+      <div class="section-title" style="font-size:16px">Действия</div>
+    </div>
+    <div class="settings-list">
+      <div class="setting-row" onclick="adminResetAll()">
+        <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0114.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0020.5 15"/></svg>
+        <div class="setting-info"><div class="setting-name">Сбросить лимиты всем</div><div class="setting-sub">Все получат свежие 3 запроса</div></div>
+      </div>
+      <div class="setting-row" onclick="adminClearToday()">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+        <div class="setting-info"><div class="setting-name">Очистить статистику дня</div><div class="setting-sub">Обнулить сегодняшние счётчики</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="home"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>Главная</button>
+    <button class="tab" data-tab="tutor"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>Репетитор</button>
+    <button class="tab" data-tab="hw"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>ГДЗ</button>
+    <button class="tab" data-tab="prices"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg>Цены</button>
+    <button class="tab" data-tab="pay"><svg viewBox="0 0 24 24"><path d="M12 1l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>Premium</button>
+    <button class="tab" data-tab="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>Профиль</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================== КОНСТАНТЫ ================== */
+const ADMIN_EMAIL = 'davletshinmalik@icloud.com';
+const DAILY_LIMIT = 3;
+
+/* ================== ХРАНИЛИЩЕ ================== */
+const S = { USERS:'neostudy_v3_users', CURRENT:'neostudy_v3_current', PROMO:'neostudy_v3_promos' };
+let USERS = {}, CURRENT = null, USED_PROMOS = {};
+
+function loadStore(){
+  try{ USERS = JSON.parse(localStorage.getItem(S.USERS) || '{}'); }catch(e){ USERS = {}; }
+  try{ CURRENT = localStorage.getItem(S.CURRENT) || null; }catch(e){ CURRENT = null; }
+  try{ USED_PROMOS = JSON.parse(localStorage.getItem(S.PROMO) || '{}'); }catch(e){ USED_PROMOS = {}; }
+}
+function saveUsers(){ localStorage.setItem(S.USERS, JSON.stringify(USERS)); }
+function saveCurrent(){ localStorage.setItem(S.CURRENT, CURRENT || ''); }
+function savePromos(){ localStorage.setItem(S.PROMO, JSON.stringify(USED_PROMOS)); }
+const me = () => CURRENT ? USERS[CURRENT] : null;
+const isAdmin = () => CURRENT === ADMIN_EMAIL;
+
+/* ================== ДАТА ================== */
+function todayKey(){
+  const d = new Date();
+  return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+}
+
+/* ================== ЛИМИТЫ ================== */
+function getUsage(){
+  const u = me(); if(!u) return { tutor:0, hw:0, prices:0 };
+  const today = todayKey();
+  if(u.usageDate !== today){
+    u.usageDate = today;
+    u.usage = { tutor:0, hw:0, prices:0 };
+    saveUsers();
+  }
+  if(!u.usage) u.usage = { tutor:0, hw:0, prices:0 };
+  return u.usage;
+}
+function getLeft(service){
+  if(isAdmin()) return '∞';
+  const sub = getSubStatus();
+  if(sub.active) return '∞';
+  const u = me(); if(!u) return 0;
+  const usage = getUsage();
+  return Math.max(0, DAILY_LIMIT - (usage[service] || 0));
+}
+function canUse(service){
+  if(isAdmin()) return true;
+  const sub = getSubStatus();
+  if(sub.active) return true;
+  const u = me(); if(!u) return false;
+  const usage = getUsage();
+  return (usage[service] || 0) < DAILY_LIMIT;
+}
+function useService(service){
+  if(isAdmin()) return;
+  const sub = getSubStatus();
+  if(sub.active) return;
+  const u = me(); if(!u) return;
+  const usage = getUsage();
+  usage[service] = (usage[service] || 0) + 1;
+  u.usage = usage;
+  u.totalReq = (u.totalReq || 0) + 1;
+  saveUsers();
+  updateLimitUI();
+}
+
+function updateLimitUI(){
+  const u = me(); if(!u) return;
+  ['tutor','hw','prices'].forEach(s => {
+    const el = $(s + 'LimitLeft');
+    if(el) el.textContent = getLeft(s);
+  });
+  updateStatusChip();
+  updateProfileUI();
+  updateHomeStats();
+}
+
+/* ================== ПРОМО ================== */
+function generatePromos(){
+  const list = [];
+  for(let i=1;i<=25;i++) list.push({code:'FRE5-'+String(i).padStart(4,'0'),type:'free',count:5});
+  for(let i=1;i<=10;i++) list.push({code:'FR10-'+String(i).padStart(4,'0'),type:'free',count:10});
+  for(let i=1;i<=5;i++) list.push({code:'FR25-'+String(i).padStart(4,'0'),type:'free',count:25});
+  for(let i=1;i<=30;i++) list.push({code:'WEEK-'+String(i).padStart(4,'0'),type:'sub',days:7,plan:'week'});
+  for(let i=1;i<=20;i++) list.push({code:'MNTH-'+String(i).padStart(4,'0'),type:'sub',days:30,plan:'month'});
+  for(let i=1;i<=10;i++) list.push({code:'YEAR-'+String(i).padStart(4,'0'),type:'sub',days:365,plan:'year'});
+  return list;
+}
+const PROMO_MAP = {}; generatePromos().forEach(p => PROMO_MAP[p.code] = p);
+
+function redeemPromo(code){
+  code = String(code || '').toUpperCase().trim();
+  if(!code) return {ok:false, msg:'Введи код'};
+  const promo = PROMO_MAP[code];
+  if(!promo) return {ok:false, msg:'❌ Неверный промокод'};
+  const user = me(); if(!user) return {ok:false, msg:'Ошибка'};
+  const key = CURRENT + ':' + code;
+  if(USED_PROMOS[key]) return {ok:false, msg:'❌ Уже использован'};
+  if(promo.type === 'free'){
+    user.freeReq = (user.freeReq || 0) + promo.count;
+    USED_PROMOS[key] = true; savePromos(); saveUsers();
+    return {ok:true, msg:'✅ +' + promo.count + ' запросов'};
+  }
+  if(promo.type === 'sub'){
+    const now = Date.now();
+    const cur = user.subExpires && user.subExpires > now ? user.subExpires : now;
+    user.subExpires = cur + promo.days * 86400000;
+    user.subPlan = promo.plan;
+    USED_PROMOS[key] = true; savePromos(); saveUsers();
+    return {ok:true, msg:'✅ Подписка на ' + promo.days + ' дней!'};
+  }
+  return {ok:false, msg:'Ошибка'};
+}
+
+/* ================== УТИЛИТЫ ================== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(msg, type){
+  const t = $('toast'); t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+/* ================== AUTH ================== */
+let authMode = 'login';
+document.querySelectorAll('.auth-tab').forEach(t => {
+  t.onclick = () => {
+    document.querySelectorAll('.auth-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active'); authMode = t.dataset.auth;
+    $('authBtn').textContent = authMode === 'login' ? 'Войти' : 'Зарегистрироваться';
+    $('authErr').textContent = '';
+  };
+});
+function doAuth(){
+  const email = $('authEmail').value.trim().toLowerCase();
+  const pass = $('authPass').value;
+  $('authErr').textContent = '';
+  if(!email || !email.includes('@')){ $('authErr').textContent = 'Введи корректный email'; return; }
+  if(pass.length < 4){ $('authErr').textContent = 'Пароль минимум 4 символа'; return; }
+
+  if(authMode === 'register'){
+    if(USERS[email]){ $('authErr').textContent = 'Email уже используется'; return; }
+    USERS[email] = {
+      email, password: pass,
+      name: email.split('@')[0],
+      created: Date.now(),
+      freeReq: 0,
+      totalReq: 0,
+      subExpires: 0, subPlan: null,
+      usage: { tutor:0, hw:0, prices:0 },
+      usageDate: todayKey()
+    };
+    saveUsers(); CURRENT = email; saveCurrent(); enterApp();
+    toast('Добро пожаловать! 3 запроса в день', 'ok');
+  } else {
+    const u = USERS[email];
+    if(!u){ $('authErr').textContent = 'Пользователь не найден'; return; }
+    if(u.password !== pass){ $('authErr').textContent = 'Неверный пароль'; return; }
+    CURRENT = email; saveCurrent(); enterApp();
+    toast(email === ADMIN_EMAIL ? '👑 С возвращением, админ!' : 'С возвращением!', 'ok');
+  }
+}
+$('authBtn').onclick = doAuth;
+$('authPass').addEventListener('keydown', e => { if(e.key === 'Enter') doAuth(); });
+function logout(){
+  CURRENT = null; saveCurrent();
+  $('authScreen').style.display = 'flex'; $('app').classList.remove('show');
+  authMode = 'login';
+  document.querySelectorAll('.auth-tab').forEach((x,i) => x.classList.toggle('active', i===0));
+  $('authBtn').textContent = 'Войти';
+  $('authEmail').value = ''; $('authPass').value = '';
+}
+function logoutConfirm(){ if(confirm('Выйти?')) logout(); }
+
+/* ================== ПОДПИСКА ================== */
+function getSubStatus(){
+  const u = me(); if(!u) return {active:false, days:0};
+  if(u.subExpires && u.subExpires > Date.now()){
+    return { active: true, days: Math.ceil((u.subExpires - Date.now()) / 86400000), plan: u.subPlan };
+  }
+  return { active: false, days: 0 };
+}
+function updateStatusChip(){
+  const chip = $('statusChip'), txt = $('statusText');
+  if(isAdmin()){
+    chip.className = 'chip admin';
+    txt.textContent = '👑 ADMIN';
+    return;
+  }
+  const s = getSubStatus();
+  if(s.active){
+    chip.className = 'chip active';
+    txt.textContent = 'Premium · ' + s.days + 'д';
+  } else {
+    chip.className = 'chip active';
+    const u = me();
+    const usage = getUsage();
+    const total = (usage.tutor||0) + (usage.hw||0) + (usage.prices||0);
+    const left = Math.max(0, 9 - total);
+    txt.textContent = 'Free · ' + left + '/9';
+  }
+}
+function selectPlan(plan){
+  const names = { week:'неделю (100₽)', month:'месяц (400₽)', year:'год (1200₽)' };
+  window.open('https://t.me/okselov?text=' + encodeURIComponent('Привет! Хочу оформить подписку NeoStudy на ' + names[plan]), '_blank');
+  toast('Открываем Telegram...', 'ok');
+}
+
+/* ================== AI (Pollinations — бесплатно) ================== */
+async function callAI(systemPrompt, userMessage, service){
+  const u = me(); if(!u) return 'Ошибка авторизации';
+
+  if(!canUse(service)){
+    return '⚠️ Лимит на сегодня исчерпан (3 запроса в день на этот сервис).\n\n' +
+           'Чтобы продолжить — оформи Premium или активируй промокод:\n' +
+           '• FRE5-0001 — +5 запросов\n' +
+           '• FR10-0001 — +10 запросов\n' +
+           '• WEEK-0001 — неделя Premium\n' +
+           '• MNTH-0001 — месяц Premium';
+  }
+
+  useService(service);
+
+  try{
+    const res = await fetch('https://text.pollinations.ai/openai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'openai',
+        messages: [
+          { role: 'system', content: systemPrompt + '\n\nОтвечай на русском. Будь дружелюбным, объясняй понятно.' },
+          { role: 'user', content: userMessage }
+        ]
+      })
+    });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const text = data?.choices?.[0]?.message?.content;
+    if(text) return text;
+    throw new Error('Empty');
+  }catch(e){
+    return '⚠️ ИИ временно недоступен. Попробуй через 10 секунд.';
+  }
+}
+
+/* ================== ROUTING ================== */
+const BASE_TABS = ['home','tutor','hw','prices','pay','profile'];
+function renderTabs(){
+  const tabs = $('tabs');
+  let html = '';
+  const items = [
+    {id:'home', icon:'<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/>', label:'Главная'},
+    {id:'tutor', icon:'<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>', label:'Репетитор'},
+    {id:'hw', icon:'<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>', label:'ГДЗ'},
+    {id:'prices', icon:'<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/>', label:'Цены'},
+    {id:'pay', icon:'<path d="M12 1l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/>', label:'Premium'},
+    {id:'profile', icon:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/>', label:'Профиль'}
+  ];
+  if(isAdmin()){
+    items.push({id:'admin', icon:'<path d="M3 7l4 4 5-8 5 8 4-4v11H3z"/>', label:'Админ'});
+  }
+  html = items.map(it =>
+    '<button class="tab" data-tab="' + it.id + '"><svg viewBox="0 0 24 24">' + it.icon + '</svg>' + it.label + '</button>'
+  ).join('');
+  tabs.innerHTML = html;
+  tabs.querySelectorAll('.tab').forEach(t => t.onclick = () => go(t.dataset.tab));
+}
+
+let currentTab = 'home';
+function go(tab){
+  currentTab = tab;
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  const page = $('page-' + tab); if(page) page.classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  if(tab === 'profile') updateProfileUI();
+  if(tab === 'pay') updateStatusChip();
+  if(tab === 'home') updateHomeStats();
+  if(tab === 'admin') refreshAdmin();
+  updateLimitUI();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function updateHomeStats(){
+  const u = me(); if(!u) return;
+  if(isAdmin()){ $('statFree').textContent = '∞'; return; }
+  const s = getSubStatus();
+  if(s.active){ $('statFree').textContent = '∞'; return; }
+  const usage = getUsage();
+  const left = Math.max(0, DAILY_LIMIT - (usage.home === undefined ? 0 : 0));
+  $('statFree').textContent = DAILY_LIMIT;
+}
+
+/* ================== TUTOR ================== */
+const LANGUAGES = [
+  { id:'english', name:'🇬🇧 Английский', prompt:'Ты репетитор английского. Учи пользователя, объясняй грамматику, исправляй ошибки, переводи.' },
+  { id:'spanish', name:'🇪🇸 Испанский', prompt:'Ты репетитор испанского. Учи пользователя, объясняй грамматику, исправляй ошибки, переводи.' },
+  { id:'french', name:'🇫🇷 Французский', prompt:'Ты репетитор французского. Учи пользователя, объясняй грамматику, исправляй ошибки, переводи.' },
+  { id:'german', name:'🇩🇪 Немецкий', prompt:'Ты репетитор немецкого. Учи пользователя, объясняй грамматику, исправляй ошибки, переводи.' },
+  { id:'chinese', name:'🇨🇳 Китайский', prompt:'Ты репетитор китайского. Учи пользователя, объясняй иероглифы, тоны, произношение.' },
+  { id:'code', name:'💻 Программирование', prompt:'Ты учитель программирования. Объясняй концепции, показывай примеры кода, разбирай ошибки.' }
+];
+let currentLang = null;
+(function(){
+  const el = $('langChips');
+  el.innerHTML = LANGUAGES.map(l => '<button class="lang-chip" data-lang="'+l.id+'">'+l.name+'</button>').join('');
+  el.querySelectorAll('[data-lang]').forEach(b => b.onclick = () => selectLang(b.dataset.lang));
+})();
+function selectLang(id){
+  const lang = LANGUAGES.find(l => l.id === id); if(!lang) return;
+  currentLang = lang;
+  document.querySelectorAll('.lang-chip').forEach(b => b.classList.toggle('active', b.dataset.lang === id));
+  $('tutorName').textContent = lang.name;
+  $('tutorAvatar').textContent = lang.name.split(' ')[0];
+  $('tutorMessages').innerHTML = '';
+  addMsg('ai', 'Привет! Я твой репетитор. Готов учиться?');
+}
+function addMsg(role, text){
+  const wrap = $('tutorMessages');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  let html = esc(text).replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/```(\w+)?\n?([\s\S]*?)```/g, '<pre style="background:rgba(0,0,0,.4);padding:10px;border-radius:8px;overflow-x:auto;margin:6px 0;font-size:12px;white-space:pre">$2</pre>');
+  div.innerHTML = html + '<span class="msg-time">' + new Date().toTimeString().slice(0,5) + '</span>';
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+function showTyping(container){
+  const div = document.createElement('div');
+  div.className = 'typing-indicator';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  container.appendChild(div); container.scrollTop = container.scrollHeight;
+  return div;
+}
+$('tutorSend').onclick = async () => {
+  if(!currentLang){ toast('Сначала выбери язык', 'err'); return; }
+  const input = $('tutorInput');
+  const text = input.value.trim(); if(!text) return;
+  if(!canUse('tutor')){
+    toast('Лимит исчерпан — 3/3 в день', 'err');
+    addMsg('ai', '⚠️ На сегодня всё. Оформи Premium или активируй промокод для продолжения.');
+    return;
+  }
+  addMsg('user', text);
+  input.value = ''; input.style.height = 'auto';
+  const typing = showTyping($('tutorMessages'));
+  const reply = await callAI(currentLang.prompt, text, 'tutor');
+  typing.remove();
+  addMsg('ai', reply);
+  speakText(reply);
+};
+$('tutorInput').addEventListener('keydown', e => {
+  if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); $('tutorSend').click(); }
+});
+$('tutorInput').addEventListener('input', function(){
+  this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
+
+/* ================== ГОЛОС ================== */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null, isRecording = false;
+$('tutorMic').onclick = () => {
+  if(!SR){ toast('Голос не поддерживается (используй Chrome)', 'err'); return; }
+  if(isRecording){ recognition.stop(); return; }
+  try{
+    recognition = new SR();
+    recognition.lang = 'ru-RU';
+    recognition.onstart = () => { isRecording = true; $('tutorMic').classList.add('recording'); toast('🎤 Говори...', 'ok'); };
+    recognition.onresult = (e) => { $('tutorInput').value = e.results[0][0].transcript; };
+    recognition.onerror = (e) => { isRecording = false; $('tutorMic').classList.remove('recording'); toast('Ошибка: ' + e.error, 'err'); };
+    recognition.onend = () => { isRecording = false; $('tutorMic').classList.remove('recording'); };
+    recognition.start();
+  }catch(e){ toast('Не удалось запустить микрофон', 'err'); }
+};
+function speakText(text){
+  if(!('speechSynthesis' in window)) return;
+  const clean = text.replace(/[*_`#]/g, '').slice(0, 200);
+  const u = new SpeechSynthesisUtterance(clean);
+  u.lang = 'ru-RU';
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+
+/* ================== ГДЗ ================== */
+$('hwPhoto').onchange = () => toast('📸 Фото загружено', 'ok');
+$('hwSolve').onclick = async () => {
+  const text = $('hwInput').value.trim();
+  const subject = $('hwSubject').value.trim();
+  if(!text){ toast('Введи задание', 'err'); return; }
+  if(!canUse('hw')){
+    toast('Лимит исчерпан — 3/3 в день', 'err');
+    $('hwResult').innerHTML = '<div class="notice notice-err">⚠️ Лимит на сегодня исчерпан. Оформи Premium или активируй промокод.</div>';
+    return;
+  }
+  $('hwResult').innerHTML = '<div class="notice notice-info"><span class="spinner"></span> Решаем...</div>';
+  const prompt = 'Ты помощник для решения домашних заданий' + (subject ? ' по предмету ' + subject : '') + '. Реши задачу пошагово, объясни каждый шаг.';
+  const reply = await callAI(prompt, text, 'hw');
+  $('hwResult').innerHTML = '<div class="msg ai" style="max-width:100%;white-space:pre-wrap">' +
+    esc(reply).replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>') + '</div>';
+};
+
+/* ================== ЦЕНЫ ================== */
+$('pricePhoto').onchange = () => toast('📸 Фото загружено', 'ok');
+$('priceSearch').onclick = async () => {
+  const url = $('priceUrl').value.trim();
+  const name = $('priceName').value.trim();
+  if(!url && !name){ toast('Введи ссылку или название', 'err'); return; }
+  if(!canUse('prices')){
+    toast('Лимит исчерпан — 3/3 в день', 'err');
+    $('priceResults').innerHTML = '<div class="notice notice-err">⚠️ Лимит на сегодня исчерпан. Оформи Premium или активируй промокод.</div>';
+    return;
+  }
+  $('priceResults').innerHTML = '<div class="notice notice-info"><span class="spinner"></span> Ищем...</div>';
+  const prompt = 'Ты помощник по сравнению цен. Дай совет где искать дешевле в российских магазинах: Ozon, Wildberries, Яндекс Маркет, Avito, AliExpress. Коротко.';
+  const aiAdvice = await callAI(prompt, (name || url) + '.', 'prices');
+  const basePrice = 5000 + Math.floor(Math.random() * 45000);
+  const shops = [
+    { name:'Ozon', icon:'🟦', d: 0.85 }, { name:'Wildberries', icon:'🟪', d: 0.78 },
+    { name:'Яндекс Маркет', icon:'🟡', d: 0.92 }, { name:'Avito', icon:'🟢', d: 0.72 },
+    { name:'AliExpress', icon:'🟠', d: 0.65 }, { name:'М.Видео', icon:'🔴', d: 1.05 }
+  ];
+  shops.sort((a,b) => a.d - b.d);
+  let html = '<div class="section-head"><div class="section-title" style="font-size:16px">Примерные цены</div></div>';
+  html += shops.map((s,i) =>
+    '<div class="price-result">' +
+      (i===0?'<div class="price-result-best">ЛУЧШАЯ</div>':'') +
+      '<div class="price-result-icon">'+s.icon+'</div>' +
+      '<div class="price-result-info"><div class="price-result-name">'+s.name+'</div><div class="price-result-sub">'+esc(name||'товар')+'</div></div>' +
+      '<div class="price-result-cost">'+Math.floor(basePrice*s.d).toLocaleString('ru')+' ₽</div>' +
+    '</div>'
+  ).join('');
+  html += '<div class="notice notice-info" style="margin-top:14px"><strong>💡 Совет ИИ:</strong><br>' +
+    esc(aiAdvice).replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>') + '</div>';
+  $('priceResults').innerHTML = html;
+};
+
+/* ================== ПРОМО ================== */
+$('promoBtn').onclick = () => {
+  const code = $('promoInput').value.trim().toUpperCase();
+  const st = $('promoStatus'); st.className = 'promo-status';
+  if(!code){ st.textContent = 'Введи код'; st.classList.add('err'); return; }
+  const res = redeemPromo(code);
+  if(res.ok){
+    st.textContent = res.msg; st.classList.add('ok');
+    $('promoInput').value = '';
+    updateLimitUI(); updateProfileUI();
+    toast(res.msg, 'ok');
+  } else { st.textContent = res.msg; st.classList.add('err'); }
+};
+$('promoInput').addEventListener('keydown', e => { if(e.key === 'Enter') $('promoBtn').click(); });
+
+/* ================== ПРОФИЛЬ ================== */
+function updateProfileUI(){
+  const u = me(); if(!u) return;
+  $('profName').textContent = u.name;
+  $('profMail').textContent = u.email;
+  $('profAvatar').textContent = u.name.slice(0,1).toUpperCase();
+  $('profAvatar').className = 'profile-avatar' + (isAdmin() ? ' admin' : '');
+
+  const s = getSubStatus();
+  if(isAdmin()){
+    $('profBadge').className = 'profile-badge';
+    $('profBadge').textContent = '👑 ADMIN · ∞ запросов';
+  } else if(s.active){
+    $('profBadge').className = 'profile-badge';
+    $('profBadge').textContent = '👑 Premium · ' + s.days + ' дней';
+  } else {
+    $('profBadge').className = 'profile-badge free';
+    $('profBadge').textContent = 'Free · 3 в день';
+  }
+
+  const usage = getUsage();
+  const todayTotal = (usage.tutor||0) + (usage.hw||0) + (usage.prices||0);
+  $('profTotalReq').textContent = u.totalReq || 0;
+  $('profTodayReq').textContent = todayTotal;
+  $('profDays').textContent = Math.floor((Date.now() - u.created) / 86400000);
+}
+
+/* ================== ADMIN PANEL ================== */
+function refreshAdmin(){
+  if(!isAdmin()) return;
+  const users = Object.values(USERS);
+  $('adminTotalUsers').textContent = users.length;
+  $('adminTotalReqs').textContent = users.reduce((s,u) => s + (u.totalReq||0), 0);
+  const today = todayKey();
+  $('adminTodayReqs').textContent = users.reduce((s,u) => {
+    if(u.usageDate !== today || !u.usage) return s;
+    return s + (u.usage.tutor||0) + (u.usage.hw||0) + (u.usage.prices||0);
+  }, 0);
+  $('adminPremiumCount').textContent = users.filter(u => u.subExpires && u.subExpires > Date.now()).length;
+
+  // Список юзеров
+  const list = $('adminUsersList');
+  if(!users.length){
+    list.innerHTML = '<div class="notice notice-info">Пока нет пользователей</div>';
+    return;
+  }
+  list.innerHTML = users.map(u => {
+    const isUAdmin = u.email === ADMIN_EMAIL;
+    const s = u.subExpires && u.subExpires > Date.now() ? 'Premium' : 'Free';
+    const usage = u.usage || {tutor:0, hw:0, prices:0};
+    const today = todayKey();
+    const t = u.usageDate === today ? ((usage.tutor||0)+(usage.hw||0)+(usage.prices||0)) : 0;
+    return '<div class="admin-user-row">' +
+      '<div class="admin-user-av">' + esc(u.name.slice(0,1).toUpperCase()) + '</div>' +
+      '<div class="admin-user-info">' +
+        '<div class="admin-user-name">' + esc(u.name) + (isUAdmin ? ' 👑' : '') + '</div>' +
+        '<div class="admin-user-meta">' + esc(u.email) + ' · ' + s + ' · сегодня: ' + t + '</div>' +
+      '</div>' +
+      '<div class="admin-actions">' +
+        '<button onclick="adminGiveMonth(\'' + esc(u.email) + '\')" title="Дать месяц Premium">⭐</button>' +
+        '<button onclick="adminResetUser(\'' + esc(u.email) + '\')" title="Сбросить лимиты">🔄</button>' +
+        '<button class="danger" onclick="adminDeleteUser(\'' + esc(u.email) + '\')" title="Удалить">🗑️</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function adminGiveMonth(email){
+  const u = USERS[email]; if(!u) return;
+  const now = Date.now();
+  const cur = u.subExpires && u.subExpires > now ? u.subExpires : now;
+  u.subExpires = cur + 30 * 86400000;
+  u.subPlan = 'month';
+  saveUsers();
+  toast('⭐ Premium на месяц выдан: ' + u.name, 'ok');
+  refreshAdmin();
+}
+
+function adminResetUser(email){
+  const u = USERS[email]; if(!u) return;
+  u.usage = { tutor:0, hw:0, prices:0 };
+  u.usageDate = todayKey();
+  saveUsers();
+  toast('🔄 Лимиты сброшены: ' + u.name, 'ok');
+  refreshAdmin();
+}
+
+function adminDeleteUser(email){
+  if(email === ADMIN_EMAIL){ toast('Нельзя удалить админа', 'err'); return; }
+  if(!confirm('Удалить пользователя ' + email + '?')) return;
+  delete USERS[email];
+  saveUsers();
+  toast('🗑️ Пользователь удалён', 'ok');
+  refreshAdmin();
+}
+
+function adminResetAll(){
+  if(!confirm('Сбросить лимиты всем пользователям?')) return;
+  const today = todayKey();
+  Object.values(USERS).forEach(u => {
+    u.usage = { tutor:0, hw:0, prices:0 };
+    u.usageDate = today;
+  });
+  saveUsers();
+  toast('🔄 Лимиты сброшены всем', 'ok');
+  refreshAdmin();
+}
+
+function adminClearToday(){
+  if(!confirm('Очистить сегодняшнюю статистику?')) return;
+  const today = todayKey();
+  Object.values(USERS).forEach(u => {
+    if(u.usageDate === today){
+      u.usage = { tutor:0, hw:0, prices:0 };
+    }
+  });
+  saveUsers();
+  toast('🗑️ Статистика очищена', 'ok');
+  refreshAdmin();
+}
+
+/* ================== INIT ================== */
+function enterApp(){
+  $('authScreen').style.display = 'none';
+  $('app').classList.add('show');
+  renderTabs();
+  updateStatusChip();
+  updateProfileUI();
+  updateHomeStats();
+  updateLimitUI();
+  go('home');
+}
+
+loadStore();
+if(CURRENT && USERS[CURRENT]) enterApp();
+else $('authScreen').style.display = 'flex';
+</script>
+</body>
+</html>
